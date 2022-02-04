@@ -137,7 +137,7 @@ TARGET_ODM_PROP += $(COMMON_PATH)/props/odm.prop
 TARGET_PRODUCT_PROP += $(COMMON_PATH)/props/product.prop
 TARGET_SYSTEM_PROP += $(COMMON_PATH)/props/system.prop
 TARGET_VENDOR_PROP += $(COMMON_PATH)/props/vendor.prop
-TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/utils/system_ext.prop
+TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/props/system_ext.prop
 
 # SELinux
 include device/qcom/sepolicy-legacy-um/SEPolicy.mk
