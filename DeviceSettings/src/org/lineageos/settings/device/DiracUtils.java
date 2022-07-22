@@ -36,7 +36,7 @@ final class DiracUtils {
     }
 
     boolean isDiracEnabled() {
-        return mDiracSound != null && mDiracSound.getMusic() == 1;
+        return mDiracSound.getMusic() == 1;
     }
 
     private String getLevel() {

@@ -80,6 +80,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".speaker.ClearSpeakerActivity" 
+            android:exported="false" 
+            android:label="@string/clear_speaker_title">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".thermal.ThermalActivity"
@@ -87,7 +98,6 @@
             android:icon="@drawable/ic_thermal"
             android:label="@string/thermal_title"
             android:theme="@style/Theme.SubSettingsBase">
-         
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -97,7 +107,7 @@
         <service
             android:name=".thermal.ThermalService"
             android:permission="ThermalService">
-         </service>
+        </service>
 
         <service
             android:name=".FPSInfoService"
@@ -119,6 +129,5 @@
             android:name=".DiracService"
             android:enabled="true"
             android:stopWithTask="false" />
-
     </application>
 </manifest>
