@@ -46,4 +46,13 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>sigmahal</instance>
         </interface>
     </hal>
+<hal format="hidl">
+   <name>vendor.qti.hardware.perf</name>
+   <transport>hwbinder</transport>
+   <version>2.2</version>
+   <interface>
+      <name>IPerf</name>
+      <instance>default</instance>
+   </interface>
+</hal>
 </manifest>
