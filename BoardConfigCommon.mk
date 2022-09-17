@@ -127,16 +127,16 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/config.fs
+TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/utils/config.fs
 
 # Power
-TARGET_POWERHAL_MODE_EXT := $(COMMON_PATH)/power/power-mode.cpp
+TARGET_POWERHAL_MODE_EXT := $(COMMON_PATH)/configs/power/power-mode.cpp
 
 # Properties
-TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
-TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
-TARGET_SYSTEM_PROP += $(COMMON_PATH)/system.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
+TARGET_ODM_PROP += $(COMMON_PATH)/props/odm.prop
+TARGET_PRODUCT_PROP += $(COMMON_PATH)/props/product.prop
+TARGET_SYSTEM_PROP += $(COMMON_PATH)/props/system.prop
+TARGET_VENDOR_PROP += $(COMMON_PATH)/props/vendor.prop
 
 # SELinux
 include device/qcom/sepolicy-legacy-um/SEPolicy.mk
