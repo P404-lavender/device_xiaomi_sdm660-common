@@ -6,19 +6,13 @@
 
 COMMON_PATH := device/xiaomi/sdm660-common
 
-BOARD_VENDOR := xiaomi
-
-# Build Broken Flags
-BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
-BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sdm660
 TARGET_NO_BOOTLOADER := true
 
 # Platform
 TARGET_BOARD_PLATFORM := sdm660
+BOARD_VENDOR := xiaomi
 
 # Architecture
 TARGET_ARCH := arm64
@@ -26,27 +20,30 @@ TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := cortex-a73
+TARGET_CPU_VARIANT_RUNTIME := cortex-a73
 
-ifeq (,$(filter %_64,$(TARGET_PRODUCT)))
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a73
-endif
+TARGET_2ND_CPU_VARIANT_RUNTIME := kryo
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc170000 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=1 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_power_aware=1 service_locator.enable=1 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3
 BOARD_KERNEL_CMDLINE += loop.max_part=7
+BOARD_KERNEL_CMDLINE += printk.devkmsg=on
+BOARD_KERNEL_CMDLINE += usbcore.autosuspend=7
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-BOARD_KERNEL_CMDLINE += kpti=off
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+ifeq ($(BOARD_KERNEL_COMMON),true)
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sdm660
+endif
 TARGET_KERNEL_CLANG_COMPILE := true
-TARGET_COMPILE_WITH_MSM_KERNEL := true
-KERNEL_LD := LD=ld.lld
+TARGET_KERNEL_ADDITIONAL_FLAGS := \
+    HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument"
 
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
@@ -63,13 +60,14 @@ AUDIO_FEATURE_ENABLED_EXT_AMPLIFIER := false
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(COMMON_PATH)/bluetooth
-TARGET_USE_QTI_BT_STACK := true
+
+# Build
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
+RELAX_USES_LIBRARY_CHECK := true
+BUILD_BROKEN_ENFORCE_SYSPROP_OWNER := true
 
 # Camera
 TARGET_USES_QTI_CAMERA_DEVICE := true
-
-# Charger
-TARGET_INCLUDE_PIXEL_CHARGER := true
 
 # Display
 BOARD_USES_ADRENO := true
@@ -77,8 +75,7 @@ TARGET_USES_HWC2 := true
 TARGET_USES_GRALLOC1 := true
 TARGET_USES_ION := true
 
-# APEX
-OVERRIDE_TARGET_FLATTEN_APEX := true
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 
 # DRM
 TARGET_ENABLE_MEDIADRM_64 := true
@@ -97,10 +94,9 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
 LOC_HIDL_VERSION := 3.0
 
 # HIDL
-DEVICE_FRAMEWORK_MANIFEST_FILE := $(COMMON_PATH)/configs/manifests/framework_manifest.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE :=  $(COMMON_PATH)/configs/manifests/device_framework_compatibility_matrix.xml
-DEVICE_MANIFEST_FILE := $(COMMON_PATH)/configs/manifests/manifest.xml
-DEVICE_MATRIX_FILE := $(COMMON_PATH)/configs/manifests/compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := $(COMMON_PATH)/framework_manifest.xml
+DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
+DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
 
 # Init
 TARGET_INIT_VENDOR_LIB := //$(COMMON_PATH):libinit_sdm660
@@ -127,32 +123,23 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/utils/config.fs
-
-# Power
-TARGET_POWERHAL_MODE_EXT := $(COMMON_PATH)/configs/power/power-mode.cpp
+TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/config.fs
 
 # Properties
-TARGET_ODM_PROP += $(COMMON_PATH)/props/odm.prop
-TARGET_PRODUCT_PROP += $(COMMON_PATH)/props/product.prop
-TARGET_SYSTEM_PROP += $(COMMON_PATH)/props/system.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/props/vendor.prop
-TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/utils/system_ext.prop
+TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
+TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
+TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/system_ext.prop
+TARGET_SYSTEM_PROP += $(COMMON_PATH)/system.prop
+TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 
 # SELinux
 include device/qcom/sepolicy-legacy-um/SEPolicy.mk
 BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
+SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
 
-# Dex
-ifneq ($(TARGET_BUILD_VARIANT),eng)
-WITH_DEXPREOPT := true
-WITH_DEXPREOPT_DEBUG_INFO := false
-DONT_DEXPREOPT_PREBUILTS := true
-USE_DEX2OAT_DEBUG := false
-endif
-
 # Treble
+PRODUCT_FULL_TREBLE_OVERRIDE := true
 BOARD_VNDK_VERSION := current
 
 # Wifi

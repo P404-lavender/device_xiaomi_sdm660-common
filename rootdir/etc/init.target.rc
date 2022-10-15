@@ -53,17 +53,11 @@ on init
     chmod 0664 /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_trigger_count
     chmod 0664 /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hist_memory
 
-    # Give perms to  zram
-     chmod 0666 /dev/block/loop1
-     chmod 0666 /dev/block/zram0
-
-    # Change permissions for /dev/diag
-     chmod 0666 /dev/diag
-
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     mount_all /vendor/etc/fstab.qcom
+    swapon_all /vendor/etc/fstab.qcom
     chown root system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
     mkdir /mnt/vendor/persist/data 0700 system system
@@ -84,6 +78,14 @@ on post-fs
 on init
     write /sys/module/qpnp_rtc/parameters/poweron_alarm 1
 
+on late-init
+    # Start services for bootanim
+    start surfaceflinger
+    start bootanim
+    start vendor.hwcomposer-2-3
+    start vendor.configstore-hal
+    start vendor.qti.hardware.display.allocator
+
 on post-fs-data
     mkdir /data/tombstones/modem 0771 system system
     mkdir /data/tombstones/lpass 0771 system system
@@ -93,13 +95,6 @@ on post-fs-data
 on boot
     start vendor.rmt_storage
     start rfs_access
-
-    # Thermal
-    chmod 0664 /sys/class/thermal/thermal_message/sconfig
-    chown system system /sys/class/thermal/thermal_message/sconfig
-    chmod 0666 /sys/class/thermal/thermal_message/temp_state
-    chown system system /sys/class/thermal/thermal_message/temp_state
-
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/foreground/cpus 0-7
     write /dev/cpuset/foreground/boost/cpus 0-7
@@ -163,18 +158,6 @@ on property:init.svc.vendor.per_mgr=running
 
 on property:sys.shutdown.requested=*
     stop vendor.per_proxy
-
-on property:sys.boot_completed=1
-    setprop sys.io.scheduler "bfq"
-    # Enable ZRAM on boot_complete
-    swapon_all /vendor/etc/fstab.qcom
-    write /proc/sys/vm/swappiness 100
-
-on property:persist.sys.device_provisioned=1
-    setprop dalvik.vm.dex2oat-cpu-set 0,1,2,3,4,5,6,7
-    setprop dalvik.vm.dex2oat-threads 4
-    setprop dalvik.vm.image-dex2oat-cpu-set 4,5,6,7
-    setprop dalvik.vm.image-dex2oat-threads 4
 
 ## import cne init file
 #on post-fs
