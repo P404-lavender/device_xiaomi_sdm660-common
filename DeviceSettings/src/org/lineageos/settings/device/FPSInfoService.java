@@ -96,7 +96,7 @@ public class FPSInfoService extends Service {
 
             final int textSize = Math.round(12 * density);
 
-            Typeface typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD);
+            Typeface typeface = Typeface.create("@*android:string/config_bodyFontFamilyMedium", Typeface.BOLD);
 
             mOnlinePaint = new Paint();
             mOnlinePaint.setTypeface(typeface);
