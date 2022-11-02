@@ -47,6 +47,13 @@ TARGET_KERNEL_SOURCE := kernel/xiaomi/sdm660
 TARGET_KERNEL_CLANG_COMPILE := true
 TARGET_COMPILE_WITH_MSM_KERNEL := true
 KERNEL_LD := LD=ld.lld
+KERNEL_LLVM_SUPPORT := true
+KERNEL_CUSTOM_LLVM := true
+KERNEL_CUSTOM_LLVM_PATH := $(shell pwd)/prebuilts/clang/host/linux-x86/clang-nexus
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-gnu-
+TARGET_KERNEL_CROSS_COMPILE_PREFIX_ARM32 := arm-linux-gnueabi-
+TARGET_KERNEL_ADDITIONAL_FLAGS := \
+    HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument"
 
 # QCOM hardware
 BOARD_USES_QCOM_HARDWARE := true
