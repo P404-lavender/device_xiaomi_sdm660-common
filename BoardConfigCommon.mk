@@ -147,7 +147,6 @@ TARGET_VENDOR_PROP += $(COMMON_PATH)/props/vendor.prop
 TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/props/system_ext.prop
 
 # SELinux
-include device/qcom/sepolicy-legacy-um/SEPolicy.mk
 BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
 
