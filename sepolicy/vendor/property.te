@@ -1,4 +1,2 @@
 vendor_public_prop(hal_fingerprint_prop);
 vendor_internal_prop(thermal_engine_prop);
-# Dirac
-vendor_public_prop(dirac_prop);
