@@ -36,23 +36,13 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>AtCmdFwdService</instance>
         </interface>
     </hal>
-    <!--Sigma hal-->
     <hal format="hidl">
-        <name>vendor.qti.hardware.sigma_miracast</name>
+        <name>vendor.qti.hardware.perf</name>
         <transport>hwbinder</transport>
-        <version>1.0</version>
+        <version>2.2</version>
         <interface>
-            <name>Isigma_miracast</name>
-            <instance>sigmahal</instance>
+             <name>IPerf</name>
+             <instance>default</instance>
         </interface>
     </hal>
-<hal format="hidl">
-   <name>vendor.qti.hardware.perf</name>
-   <transport>hwbinder</transport>
-   <version>2.2</version>
-   <interface>
-      <name>IPerf</name>
-      <instance>default</instance>
-   </interface>
-</hal>
 </manifest>
