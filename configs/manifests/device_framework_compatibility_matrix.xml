@@ -545,4 +545,28 @@
       <instance>pasrhal</instance>
    </interface>
 </hal>
+<hal format="hidl" optional="true">
+    <name>android.hardware.media.c2</name>
+    <version>1.0</version>
+    <interface>
+        <name>IComponentStore</name>
+        <instance>software</instance>
+    </interface>
+</hal>
+<hal format="hidl" optional="true">
+    <name>vendor.qti.hardware.wifi.wificfr</name>
+    <version>1.0</version>
+    <interface>
+        <name>IWificfr</name>
+        <instance>wificfr</instance>
+    </interface>
+</hal>
+<hal format="hidl" optional="true">
+    <name>vendor.qti.hardware.wifi.wifimyftm</name>
+    <version>1.0</version>
+    <interface>
+        <name>IWifiMyFtm</name>
+        <instance>default</instance>
+    </interface>
+</hal>
 </compatibility-matrix>
